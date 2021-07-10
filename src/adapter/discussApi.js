@@ -28,7 +28,7 @@ axiosApiInstance.interceptors.request.use(
 axiosApiInstance.interceptors.response.use(
   response => response,
   error => {
-    if (error.response.status === 401) {
+    if (error?.response?.status === 401) {
       window.location = "/logout"
     }
 
