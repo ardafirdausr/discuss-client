@@ -1,5 +1,11 @@
 import AppRouter from './AppRouter';
 
-const App = () => (<AppRouter />);
+import Store from './store';
+
+const App = () => (
+  <Store>
+    <AppRouter />
+  </Store>
+);
 
 export default App;
