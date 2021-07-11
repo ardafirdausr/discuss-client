@@ -36,7 +36,6 @@ const LoginButton = () => {
 			message.warn("Login failed")
 			console.log(err)
 		}
-    console.log(googleAuth);
 	}
 
 	const failedHandler = function (resp) {
