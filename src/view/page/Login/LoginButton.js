@@ -30,7 +30,12 @@ const LoginButton = () => {
 			let response = await discussApi.post('/auth/login', {
 				"token_id": googleAuth.tokenId
 			});
-			let { data: user, token } = response.data;
+			let { data, token } = response.data;
+      const user = {
+        name: data.name,
+        email: data.email,
+        imageUrl: data.image_url,
+      }
       loginUser(token, user)
 		} catch(err) {
 			message.warn("Login failed")

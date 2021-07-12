@@ -1,18 +1,28 @@
+import { useState } from 'react';
 import { Layout } from 'antd';
 
-const { Sider, Header } = Layout;
+import DiscussionList from './DiscussionList';
+import DiscussionChat from './DiscussionChat';
 
-const Chat = () => (
-  <Layout>
-    <Sider>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur ullam cupiditate voluptatibus perferendis, temporibus quis quos quae quia est suscipit.
-    </Sider>
-    <Layout>
-      <Header>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus itaque, mollitia dolore atque voluptas porro esse sapiente eveniet quis saepe?
-      </Header>
+import  style from './index.module.scss';
+
+const { Sider } = Layout;
+
+const Chat = () => {
+  const [selectedDiscussion, setSelectedDiscussion] = useState(null);
+
+  const isMobile = window.innerWidth <= 768;
+
+  return (
+    <Layout className={style.container}>
+      <Sider theme="light" width={`${isMobile ? '100%' : '410px'}`} className={style.discussionList}>
+        <DiscussionList onSelect={setSelectedDiscussion} />
+      </Sider>
+      <Layout className={style.discussion}>
+        <DiscussionChat discussion={selectedDiscussion} />
+      </Layout>
     </Layout>
-  </Layout>
-)
+  );
+}
 
 export default Chat;
