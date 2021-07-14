@@ -14,7 +14,6 @@ import {
   faEnvelopeOpenText
 } from '@fortawesome/free-solid-svg-icons'
 
-
 import style from './DiscussionInformation.module.scss';
 
 const DiscussionInformation = ({ discussion, onClickCreate, onClickJoin }) => {

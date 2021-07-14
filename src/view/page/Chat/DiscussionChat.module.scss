@@ -1,47 +1,107 @@
 .container {
-  overflow-y: scroll;
+  width: 100%;
   height: calc(100% - 64px);
-  background-color: #f9f9f9;
-  padding: 0px 24px 16px;
+  display: flex;
+  flex-direction: column;
 
-  &::-webkit-scrollbar{
-    width: 10px;
+  .messageContainer {
+    flex: 1;
+    overflow-y: scroll;
+    background-color: #f9f9f9;
+    padding: 0px 8px;
+
+    &::-webkit-scrollbar{
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-track-piece{
+      background-color: #f9f9f9;
+    }
+
+    &::-webkit-scrollbar-thumb{
+      background-color: #CBCBCB;
+      outline: 2px solid #f9f9f9;
+      outline-offset: -2px;
+      border: .1px solid #B7B7B7;
+    }
+
+    &::-webkit-scrollbar-thumb:hover{
+      background-color: #909090;
+    }
+
+    .incomingMessage {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: flex-end;
+      margin: 8px 0px;
+
+      .avatar {
+        order: 1
+      }
+
+      .message {
+        order: 2;
+      }
+    }
+
+    .sentMessage {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: flex-end;
+      margin: 8px 0px;
+
+      .avatar {
+        order: 2
+      }
+
+      .message {
+        order: 1;
+      }
+    }
+
+    .message {
+      max-width: 60%;
+      padding: 8px;
+      margin: 0px 16px;
+      border-radius: 16px;
+      background-color: #fff;
+    }
+
+    .sender {
+      font-weight: 700;
+      color: #06D755;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .time {
+      font-size: 0.7em;
+      margin-top: 8px;
+      text-align: right;
+      color: #7f7f7f;
+    }
+
+    .chatForm {
+      background-color: #fff;
+    }
   }
 
-  &::-webkit-scrollbar-track-piece{
-    background-color: #FFF;
-  }
-
-  &::-webkit-scrollbar-thumb{
-    background-color: #CBCBCB;
-    outline: 2px solid #FFF;
-    outline-offset: -2px;
-    border: .1px solid #B7B7B7;
-  }
-
-  &::-webkit-scrollbar-thumb:hover{
-    background-color: #909090;
-  }
-
-  .message {
+  .messageFormContainer {
+    padding: 8px;
     background-color: #fff;
-    padding: 16px;
-    border-radius: 16px;
-    margin: 8px 0px;
+    box-shadow: 0px -2px 3px #eaeaea;
   }
+}
 
-  .sender {
-    font-weight: 700;
-    color: #06D755;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
 
-  .time {
-    font-size: 0.7rem;
-    margin-top: 8px;
-    text-align: right;
-    color: #7f7f7f;
+@media screen and (max-width: 768px) {
+  .message {
+
+    * {
+      font-size: 1rem;
+    }
   }
 }
