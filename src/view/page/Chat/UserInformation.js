@@ -33,17 +33,17 @@ const UserInformation = ({ onClickCreate, onClickJoin }) => {
 
   const UserInformationMenu = () => (
     <Menu>
-      <Menu.Item>
-        <div onClick={onClickCreate} style={{fontWeight: "bold", color: "#5f5f5f"}}>
+      <Menu.Item key="user-menu-1">
+        <div onClick={onClickCreate} style={{fontWeight: "bold", color: "#6f6f6f"}}>
           <FontAwesomeIcon icon={faPlusCircle} style={{ marginRight: "10px" }}/> Create Discussion
         </div>
       </Menu.Item>
-      <Menu.Item>
-        <div onClick={onClickJoin} style={{fontWeight: "bold", color: "#5f5f5f"}}>
+      <Menu.Item key="user-menu-2">
+        <div onClick={onClickJoin} style={{fontWeight: "bold", color: "#6f6f6f"}}>
           <FontAwesomeIcon icon={faExternalLinkSquareAlt} style={{ marginRight: "10px" }}/> Join Discussion
         </div>
       </Menu.Item>
-      <Menu.Item>
+      <Menu.Item key="user-menu-3" style={{borderTop: "1px solid #eaeaea"}}>
         <div onClick={logoutConfirm} style={{fontWeight: "bold", color: "deeppink"}}>
           <FontAwesomeIcon icon={faSignOutAlt} style={{ marginRight: "10px" }}/> Logout
         </div>
