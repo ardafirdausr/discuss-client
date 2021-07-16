@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useHistory } from 'react-router';
 import {
   Layout,
   Row,
@@ -17,10 +19,25 @@ const { Content } = Layout;
 
 const DiscussionChat = () => {
   const onFinish = (values) => console.log(values);
+  const history = useHistory();
+  useEffect(() => {
+    const exitChat = (event) => {
+      if (event.key === 'Escape') {
+        history.goBack();
+      }
+    }
+    document.addEventListener('keydown', exitChat);
+    return () => {
+      document.removeEventListener('keydown', exitChat);
+    }
+  })
 
   return (
     <Content className={style.container}>
       <div className={style.messageContainer}>
+        {/* <div className={style.eventMessage}>
+          <div className={style.content}>Arda created discussion</div>
+        </div>
         <div className={style.incomingMessage}>
           <Avatar className={style.avatar}>U</Avatar>
           <div className={style.message}>
@@ -29,6 +46,14 @@ const DiscussionChat = () => {
               <div className={style.time}>14/07/2021 16:00</div>
           </div>
         </div>
+        <div className={style.incomingMessage}>
+          <Avatar className={style.avatar}>U</Avatar>
+          <div className={style.message}>
+              <div className={style.sender}>Arda Firdaus Ramadhan</div>
+              <div className={style.text}>hei</div>
+              <div className={style.time}>14/07/2021 16:00</div>
+          </div>
+        </div> */}
       </div>
       <div className={style.messageFormContainer}>
         <Row
@@ -44,12 +69,13 @@ const DiscussionChat = () => {
             <Form
               name="send_chat"
               layout="inline"
-              onFinish={onFinish}>
-              <Form.Item name="message">
+              onFinish={onFinish}
+              wrapperCol={24}>
+              <Form.Item name="message" wrapperCol={{xs: {span: 24}}}>
                 <Input
                   placeholder="Send a message" />
               </Form.Item>
-              <Form.Item>
+              <Form.Item wrapperCol={{xs: {span: 24}}}>
                 <Button
                   type="primary"
                   icon={<FontAwesomeIcon icon={faPaperPlane} />} />

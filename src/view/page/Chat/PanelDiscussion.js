@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
 import UserInformation from './UserInformation';
-import CreateDiscussionDrawer from './CreateDiscussionDrawer';
-import JoinDiscussionDrawer from './JoinDiscussionDrawer';
+import DrawerCreateDiscussion from './DrawerCreateDiscussion';
+import DrawerJoinDiscussion from './DrawerJoinDiscussion';
 import DiscussionList from './DiscussionList';
 
-const DiscussionPanel = ({ onSelect }) => {
+const PanelDiscussion = () => {
   const [openCreateDrawer, setOpenCreateDrawer] = useState(false)
   const [openJoinDrawer, setOpenJoinDrawer] = useState(false)
 
@@ -16,16 +16,15 @@ const DiscussionPanel = ({ onSelect }) => {
         onClickJoin={() => setOpenJoinDrawer(true)}/>
       <DiscussionList
         onClickCreate={() => setOpenCreateDrawer(true)}
-        onClickJoin={() => setOpenJoinDrawer(true)}
-        onSelect={onSelect} />
-      <CreateDiscussionDrawer
+        onClickJoin={() => setOpenJoinDrawer(true)} />
+      <DrawerCreateDiscussion
         open={openCreateDrawer}
         onCloseDrawer={() => setOpenCreateDrawer(false)} />
-      <JoinDiscussionDrawer
+      <DrawerJoinDiscussion
         open={openJoinDrawer}
         onCloseDrawer={() => setOpenJoinDrawer(false)} />
     </>
   )
 }
 
-export default DiscussionPanel;
+export default PanelDiscussion;

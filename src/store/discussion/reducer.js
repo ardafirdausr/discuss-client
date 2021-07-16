@@ -1,9 +1,15 @@
 import * as type from './type';
+import * as actionMaker from './action';
 
 const discussionsReducer = (state = [], action) => {
   switch (action.type) {
+    case type.POPULATE_DISCUSSION:
+      let discussions = action.payload.map(discussion => {
+        return discussionReducer(null, actionMaker.addDiscussion(discussion))
+      })
+      return [...discussions];
     case type.ADD_DISCUSSION:
-      const discussion = discussionReducer(null, action);
+      let discussion = discussionReducer(null, action);
       return [...state, discussion];
     default:
       return state;

@@ -1,4 +1,10 @@
-import  style from './DiscussionChatPanel.module.scss';
+import { useContext } from 'react';
+import { useParams } from 'react-router';
+
+import { StoreContext } from "../../../store";
+import { getDiscussionByCode } from "../../../store/discussion/selector";
+
+import  style from './PanelDiscussionChat.module.scss';
 
 import DiscussionInformation from './DiscussionInformation';
 import DiscussionChat from './DiscussionChat';
@@ -11,7 +17,11 @@ const DiscussionEmptyPanel = () => (
   </div>
 );
 
-const DiscussionChatPanel = ({ discussion }) => {
+const PanelDiscussionChat = () => {
+  const { discussionCode } = useParams();
+  const { state } = useContext(StoreContext);
+  const discussion = getDiscussionByCode(state, discussionCode);
+
   if (!discussion) {
     return <DiscussionEmptyPanel />;
   }
@@ -24,4 +34,4 @@ const DiscussionChatPanel = ({ discussion }) => {
   );
 }
 
-export default DiscussionChatPanel;
+export default PanelDiscussionChat;

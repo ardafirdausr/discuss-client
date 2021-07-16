@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import {
   Avatar,
   Empty,
@@ -9,9 +9,12 @@ import {
   Badge,
   Skeleton
 } from 'antd';
+import { useHistory } from 'react-router-dom';
 
 import { StoreContext } from "../../../store";
 import { getDiscussions } from "../../../store/discussion/selector";
+import { populateDiscussion } from "../../../store/discussion/action";
+import discussAPI from '../../../adapter/discussAPI';
 
 import style from './DiscussionList.module.scss'
 
@@ -58,9 +61,27 @@ const DiscussionSkeleton = () => {
 }
 
 const DiscussionList = ({ onClickCreate, onClickJoin, onSelect }) => {
-  const { state } = useContext(StoreContext);
+  const history = useHistory();
+  const { state, dispatch } = useContext(StoreContext);
   const discussions = getDiscussions(state);
-  const [ fetching ] = useState(false)
+
+  const [ fetching, setFetching ] = useState(false)
+  useEffect(() => {
+    const fecthUserDiscussion = async () => {
+      try {
+        setFetching(true);
+        const { data: payload } = await discussAPI.get('/discussions');
+        const { data: discussions } = payload;
+        dispatch(populateDiscussion(discussions));
+      } catch(err) {
+        console.log(err)
+      } finally {
+        setFetching(false);
+      }
+    }
+    fecthUserDiscussion();
+  }, [dispatch])
+
 
   if (fetching) {
     return <DiscussionSkeleton />
@@ -83,7 +104,7 @@ const DiscussionList = ({ onClickCreate, onClickJoin, onSelect }) => {
           <List.Item
             key={discussion.id}
             className={style.discussionListWrapper}
-            onClick={() => alert(discussion.name)}>
+            onClick={() => history.push(`/chat/${discussion.code}`)}>
             <List.Item.Meta
               className={style.discussionListMeta}
               avatar={
@@ -91,10 +112,10 @@ const DiscussionList = ({ onClickCreate, onClickJoin, onSelect }) => {
                   ? <Avatar src={discussion.imageUrl} size={40} />
                   : <Avatar size={40}>{discussion.name.charAt(0)}</Avatar>
               }
-              title={<Text ellipsis className={style.main}>lorem20asdkasld laksd lkasmdl kasmdlkaksldmakmdlkasldkasm ldkasm ldkasmd laksmd laksmdlak skld</Text>}
-              description={<Text ellipsis className={style.secondary}>Ant Design, a design language for background applications, is refined by Ant UED asdasdas asd asd asdTeam</Text>}
+              title={<Text ellipsis className={style.main}>{discussion.name}</Text>}
+              description={<Text ellipsis className={style.secondary}>some chat text</Text>}
             />
-            <Badge count={10} style={{backgroundColor: '#52c41a'}} />
+            <Badge count={0} style={{backgroundColor: '#52c41a'}} />
           </List.Item>
         )}
       />
