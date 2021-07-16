@@ -10,6 +10,7 @@ import {
   Skeleton
 } from 'antd';
 import { useHistory } from 'react-router-dom';
+import humps from 'humps';
 
 import { StoreContext } from "../../../store";
 import { getDiscussions } from "../../../store/discussion/selector";
@@ -71,7 +72,8 @@ const DiscussionList = ({ onClickCreate, onClickJoin, onSelect }) => {
       try {
         setFetching(true);
         const { data: payload } = await discussAPI.get('/discussions');
-        const { data: discussions } = payload;
+        const { data: discussionsData } = payload;
+        const discussions = humps.camelizeKeys(discussionsData);
         dispatch(populateDiscussion(discussions));
       } catch(err) {
         console.log(err)

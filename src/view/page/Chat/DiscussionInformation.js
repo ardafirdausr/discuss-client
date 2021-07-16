@@ -16,7 +16,7 @@ import {
 
 import style from './DiscussionInformation.module.scss';
 
-const DiscussionInformation = ({ discussion, onClickCreate, onClickJoin }) => {
+const DiscussionInformation = ({ discussion, onClickDetail, onClickEdit, onClickInvite }) => {
   const leaveConfirm = () => {
     Modal.confirm({
       title: 'Are you sure to leave this discussion?',
@@ -29,17 +29,17 @@ const DiscussionInformation = ({ discussion, onClickCreate, onClickJoin }) => {
   const DiscussionInformationMenu = () => (
     <Menu>
       <Menu.Item key="discussion-menu-1">
-        <div onClick={onClickCreate} style={{fontWeight: "bold", color: "#6f6f6f"}}>
+        <div onClick={onClickDetail} style={{fontWeight: "bold", color: "#6f6f6f"}}>
           <FontAwesomeIcon icon={faInfoCircle} style={{ marginRight: "10px" }}/> Discussion Detail
         </div>
       </Menu.Item>
       <Menu.Item key="discussion-menu-2">
-        <div onClick={onClickJoin} style={{fontWeight: "bold", color: "#6f6f6f"}}>
+        <div onClick={onClickEdit} style={{fontWeight: "bold", color: "#6f6f6f"}}>
           <FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }}/> Edit Discussion
         </div>
       </Menu.Item>
       <Menu.Item key="discussion-menu-3">
-        <div onClick={onClickJoin} style={{fontWeight: "bold", color: "#6f6f6f"}}>
+        <div onClick={onClickInvite} style={{fontWeight: "bold", color: "#6f6f6f"}}>
           <FontAwesomeIcon icon={faEnvelopeOpenText} style={{ marginRight: "10px" }}/> Invite Member
         </div>
       </Menu.Item>

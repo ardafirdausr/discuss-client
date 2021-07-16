@@ -16,7 +16,7 @@ import slugify from '../../../lib/slugify';
 import { StoreContext } from '../../../store';
 import * as action from '../../../store/discussion/action';
 
-const CreateDrawer = ({ open, onCloseDrawer }) => {
+const DrawerCreateDiscussion = ({ open, onCloseDrawer }) => {
   const { dispatch } = useContext(StoreContext);;
   const [usePassword, setUsePassword] = useState(false)
   const [form] = Form.useForm();
@@ -141,4 +141,4 @@ const CreateDrawer = ({ open, onCloseDrawer }) => {
   );
 }
 
-export default CreateDrawer;
+export default DrawerCreateDiscussion;

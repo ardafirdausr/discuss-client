@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useState, useContext } from 'react';
 import { useParams } from 'react-router';
 
 import { StoreContext } from "../../../store";
@@ -8,6 +8,9 @@ import  style from './PanelDiscussionChat.module.scss';
 
 import DiscussionInformation from './DiscussionInformation';
 import DiscussionChat from './DiscussionChat';
+import DrawerDiscussionDetail from './DrawerDiscussionDetail';
+import DrawerEditDiscussion from './DrawerEditDiscussion';
+import DrawerInviteMember from './DrawerInviteMember';
 
 const DiscussionEmptyPanel = () => (
   <div className={style.emptyContainer}>
@@ -21,6 +24,9 @@ const PanelDiscussionChat = () => {
   const { discussionCode } = useParams();
   const { state } = useContext(StoreContext);
   const discussion = getDiscussionByCode(state, discussionCode);
+  const [openDetailDrawer, setOpenDetailDrawer] = useState(false)
+  const [openEditDrawer, setOpenEditDrawer] = useState(false)
+  const [openInviteDrawer, setOpenInviteDrawer] = useState(false)
 
   if (!discussion) {
     return <DiscussionEmptyPanel />;
@@ -28,8 +34,23 @@ const PanelDiscussionChat = () => {
 
   return (
     <>
-      <DiscussionInformation discussion={discussion} />
+      <DiscussionInformation
+        discussion={discussion}
+        onClickDetail={() => setOpenDetailDrawer(true)}
+        onClickEdit={() => setOpenEditDrawer(true)}
+        onClickInvite={() => setOpenInviteDrawer(true) }/>
       <DiscussionChat discussion={discussion} />
+      <DrawerDiscussionDetail
+        discussion={discussion}
+        open={openDetailDrawer}
+        onCloseDrawer={() => setOpenDetailDrawer(false)} />
+      {/* <DrawerEditDiscussion
+        discussion={discussion}
+        open={openEditDrawer}
+        onCloseDrawer={() => setOpenEditDrawer(false)} /> */}
+      {/* <DrawerInviteMember
+        open={openInviteDrawer}
+        onCloseDrawer={() => setOpenInviteDrawer(false)} /> */}
     </>
   );
 }
