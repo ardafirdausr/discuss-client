@@ -72,7 +72,7 @@ const DiscussionInformation = ({ discussion, onClickCreate, onClickJoin }) => {
           </div>
         </div>
       </div>
-      <Dropdown overlay={DiscussionInformationMenu} placement="bottomRight">
+      <Dropdown trigger={["click"]} overlay={DiscussionInformationMenu} placement="bottomRight">
         <Button
           type="text"
           icon={<FontAwesomeIcon icon={faEllipsisV} className={style.menuButton}/>} />

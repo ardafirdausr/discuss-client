@@ -66,7 +66,7 @@ const UserInformation = ({ onClickCreate, onClickJoin }) => {
           <div className={style.email}>{user.email}</div>
         </div>
       </div>
-      <Dropdown overlay={UserInformationMenu} placement="bottomRight">
+      <Dropdown trigger={["click"]} overlay={UserInformationMenu} placement="bottomRight">
         <Button
           type="text"
           icon={<FontAwesomeIcon icon={faEllipsisV} className={style.menuButton}/>} />
