@@ -46,8 +46,8 @@ const DrawerEditDiscussion = ({ open, onCloseDrawer }) => {
       onCloseDrawer();
       message.success("Discussion created")
     } catch (err) {
-      console.log(err)
-      message.error("Invalid data")
+      const { data } = err.response
+      message.error(data.message || "Failed")
     }
   }
 

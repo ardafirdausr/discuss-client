@@ -31,8 +31,8 @@ const DiscussionInformation = ({ discussion, onClickDetail, onClickEdit, onClick
       await discussAPI.post(`/discussions/${discussion.id}/leave`);
       dispatch(removeDiscussion({id: discussion.id}));
     } catch (err) {
-      console.log(err);
-      message.error("Failed leave the discussion");
+      const { data } = err.response
+      message.error(data.message || "Failed")
     } finally {
 
     }

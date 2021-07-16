@@ -53,8 +53,8 @@ const DiscussionSkeleton = () => {
   return (
     <div className={style.discussionSkeletonContainer}>
       {
-        dummyData.map(() => (
-          <Skeleton active avatar paragraph={{ rows: 1, size: 'small' }} />
+        dummyData.map(dummy => (
+          <Skeleton active avatar key={dummy} paragraph={{ rows: 1, size: 'small' }} />
         ))
       }
     </div>

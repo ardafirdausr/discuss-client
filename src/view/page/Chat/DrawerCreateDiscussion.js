@@ -18,8 +18,10 @@ import * as action from '../../../store/discussion/action';
 
 const DrawerCreateDiscussion = ({ open, onCloseDrawer }) => {
   const { dispatch } = useContext(StoreContext);;
-  const [usePassword, setUsePassword] = useState(false)
   const [form] = Form.useForm();
+  const [submitting, setSubmitting] = useState(false)
+  const [usingPassword, setUsingPassword] = useState(false)
+
   const [mobile, setMobile] = useState(window.innerWidth <= 768)
   useEffect(() => {
     const changeOnMobile = () => setMobile(window.innerWidth <= 768);
@@ -31,6 +33,7 @@ const DrawerCreateDiscussion = ({ open, onCloseDrawer }) => {
 
   const handleFormSubmit = async () => {
     try {
+      setSubmitting(true);
       let values = await form.validateFields()
       if (values.password !== values.password_confirmation) {
         message.error("Invalid password confirmation")
@@ -46,8 +49,10 @@ const DrawerCreateDiscussion = ({ open, onCloseDrawer }) => {
       onCloseDrawer();
       message.success("Discussion created")
     } catch (err) {
-      console.log(err)
-      message.error("Invalid data")
+      const { data } = err.response
+      message.error(data.message || "Failed")
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -63,7 +68,7 @@ const DrawerCreateDiscussion = ({ open, onCloseDrawer }) => {
           <Button onClick={onCloseDrawer} style={{ marginRight: 8 }}>
             Cancel
           </Button>
-          <Button onClick={handleFormSubmit} type="primary">
+          <Button type="primary" loading={submitting} onClick={handleFormSubmit}>
             Submit
           </Button>
         </div>
@@ -99,16 +104,15 @@ const DrawerCreateDiscussion = ({ open, onCloseDrawer }) => {
           <Col span={24}>
             <Form.Item
               name="description"
-              label="Description"
-              rules={[{ transform: (value) => value.trim() }]}>
+              label="Description">
               <Input.TextArea rows={2} />
             </Form.Item>
           </Col>
           <Col span={24} style={{marginBottom: "20px"}}>
-            <Checkbox onChange={(e) => setUsePassword(e.target.checked)}>Use Password</Checkbox>
+            <Checkbox onChange={(e) => setUsingPassword(e.target.checked)}>Use Password</Checkbox>
           </Col>
           {
-            usePassword && (
+            usingPassword && (
               <>
                 <Col span={24}>
                   <Form.Item

@@ -6,7 +6,6 @@ import {
   Col,
   Form,
   Input,
-  Checkbox,
   message
 } from "antd";
 import humps from 'humps';
@@ -17,9 +16,9 @@ import { StoreContext } from '../../../store';
 import * as action from '../../../store/discussion/action';
 
 const DrawerJoinDiscussion = ({ open, onCloseDrawer }) => {
-  const { dispatch } = useContext(StoreContext);;
-  const [usePassword, setUsePassword] = useState(false)
+  const { dispatch } = useContext(StoreContext);
   const [form] = Form.useForm();
+  const [submitting, setSubmitting] = useState(false);
   const [mobile, setMobile] = useState(window.innerWidth <= 768)
   useEffect(() => {
     const changeOnMobile = () => setMobile(window.innerWidth <= 768);
@@ -31,23 +30,20 @@ const DrawerJoinDiscussion = ({ open, onCloseDrawer }) => {
 
   const handleFormSubmit = async () => {
     try {
+      setSubmitting(true);
       let values = await form.validateFields()
-      if (values.password !== values.password_confirmation) {
-        message.error("Invalid password confirmation")
-        return;
-      }
-      delete values.password_confirmation;
-
-      const { data: response } = await discussAPI.post('/discussions', values);
+      const { data: response } = await discussAPI.post('/discussions/join', values);
       const { data: discussionData } = response;
       const discussion = humps.camelizeKeys(discussionData);
       dispatch(action.addDiscussion(discussion))
       form.resetFields();
       onCloseDrawer();
-      message.success("Discussion created")
+      message.success("Success")
     } catch (err) {
-      console.log(err)
-      message.error("Invalid data")
+      const { data } = err.response
+      message.error(data.message || "Failed")
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -63,7 +59,7 @@ const DrawerJoinDiscussion = ({ open, onCloseDrawer }) => {
           <Button onClick={onCloseDrawer} style={{ marginRight: 8 }}>
             Cancel
           </Button>
-          <Button onClick={handleFormSubmit} type="primary">
+          <Button type="primary" loading={submitting} onClick={handleFormSubmit}>
             Submit
           </Button>
         </div>
@@ -72,18 +68,6 @@ const DrawerJoinDiscussion = ({ open, onCloseDrawer }) => {
         layout="vertical"
         form={form}>
         <Row gutter={{ xs: 8, sm: 16}}>
-          <Col span={24}>
-            <Form.Item
-              name="name"
-              label="Name"
-              rules={[
-                { required: true, message: 'Please enter discussion name' },
-                { min: 4, message: 'Minimum discussion name length is 4 character'},
-                { transform: (value) => value.trim() }
-              ]}>
-              <Input placeholder="ex: Stock Discussion" />
-            </Form.Item>
-          </Col>
           <Col span={24}>
             <Form.Item
               name="code"
@@ -98,43 +82,11 @@ const DrawerJoinDiscussion = ({ open, onCloseDrawer }) => {
           </Col>
           <Col span={24}>
             <Form.Item
-              name="description"
-              label="Description"
-              rules={[{ transform: (value) => value.trim() }]}>
-              <Input.TextArea rows={2} />
+              name="password"
+              label="Password">
+              <Input.Password />
             </Form.Item>
           </Col>
-          <Col span={24} style={{marginBottom: "20px"}}>
-            <Checkbox onChange={(e) => setUsePassword(e.target.checked)}>Use Password</Checkbox>
-          </Col>
-          {
-            usePassword && (
-              <>
-                <Col span={24}>
-                  <Form.Item
-                    name="password"
-                    label="Password"
-                    rules={[
-                      { required: true, message: 'Please enter discussion password' },
-                      { transform: (value) => value.trim() }
-                    ]}>
-                    <Input.Password />
-                  </Form.Item>
-                </Col>
-                <Col span={24}>
-                  <Form.Item
-                    name="password_confirmation"
-                    label="Password Confirmation"
-                    rules={[
-                      { required: true, message: 'Please enter password confirmation' },
-                      { transform: (value) => value.trim() }
-                    ]}>
-                    <Input.Password />
-                  </Form.Item>
-                </Col>
-              </>
-            )
-          }
         </Row>
       </Form>
     </Drawer>
