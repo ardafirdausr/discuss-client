@@ -28,3 +28,11 @@ export const addDiscussion = ({
     members: members || [],
   }
 });
+
+
+export const removeDiscussion = ({ id }) => ({
+  type: type.REMOVE_DISCUSSION,
+  payload: {
+    id
+  }
+})

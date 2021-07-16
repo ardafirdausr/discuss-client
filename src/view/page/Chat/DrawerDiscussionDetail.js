@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Drawer, Avatar, List, Typography, Badge, Image } from "antd";
+import { Drawer, Avatar, List, Typography, Image } from "antd";
 
 import style from './DrawerDiscussionDetail.module.scss';
 

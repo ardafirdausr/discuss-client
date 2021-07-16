@@ -1,9 +1,11 @@
+import { useContext, useState } from 'react';
 import {
   Avatar,
   Dropdown,
   Menu,
   Button,
   Modal,
+  message
 } from 'antd';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -14,15 +16,35 @@ import {
   faEnvelopeOpenText
 } from '@fortawesome/free-solid-svg-icons'
 
+import discussAPI from '../../../adapter/discussAPI';
+import { StoreContext } from '../../../store';
+import { removeDiscussion } from '../../../store/discussion/action';
+
 import style from './DiscussionInformation.module.scss';
 
+
 const DiscussionInformation = ({ discussion, onClickDetail, onClickEdit, onClickInvite }) => {
+  const { dispatch } = useContext(StoreContext);
+
+  const leave = async () => {
+    try {
+      await discussAPI.post(`/discussions/${discussion.id}/leave`);
+      dispatch(removeDiscussion({id: discussion.id}));
+    } catch (err) {
+      console.log(err);
+      message.error("Failed leave the discussion");
+    } finally {
+
+    }
+
+  }
+
   const leaveConfirm = () => {
     Modal.confirm({
       title: 'Are you sure to leave this discussion?',
       okText: 'Leave',
       cancelText: 'Cancel',
-      onOk: () => { window.location = '/auth/logout'}
+      onOk: leave,
     });
   }
 

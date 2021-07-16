@@ -4,13 +4,14 @@ import * as actionMaker from './action';
 const discussionsReducer = (state = [], action) => {
   switch (action.type) {
     case type.POPULATE_DISCUSSION:
-      let discussions = action.payload.map(discussion => {
+      return action.payload.map(discussion => {
         return discussionReducer(null, actionMaker.addDiscussion(discussion))
       })
-      return [...discussions];
     case type.ADD_DISCUSSION:
       let discussion = discussionReducer(null, action);
       return [...state, discussion];
+    case type.REMOVE_DISCUSSION:
+      return state.filter(discussion => discussion.id !== action.payload.id);
     default:
       return state;
   }
