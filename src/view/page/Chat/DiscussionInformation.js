@@ -33,10 +33,7 @@ const DiscussionInformation = ({ discussion, onClickDetail, onClickEdit, onClick
     } catch (err) {
       const { data } = err.response
       message.error(data.message || "Failed")
-    } finally {
-
     }
-
   }
 
   const leaveConfirm = () => {

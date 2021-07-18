@@ -49,8 +49,13 @@ const DrawerCreateDiscussion = ({ open, onCloseDrawer }) => {
       onCloseDrawer();
       message.success("Discussion created")
     } catch (err) {
-      const { data } = err.response
-      message.error(data.message || "Failed")
+      console.log(err)
+      if (!err.response) {
+        message.error("Failed")
+      } else {
+        const { data } = err.response
+        message.error(data.message || "Failed")
+      }
     } finally {
       setSubmitting(false);
     }

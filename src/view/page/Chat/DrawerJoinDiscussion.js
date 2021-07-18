@@ -40,8 +40,13 @@ const DrawerJoinDiscussion = ({ open, onCloseDrawer }) => {
       onCloseDrawer();
       message.success("Success")
     } catch (err) {
-      const { data } = err.response
-      message.error(data.message || "Failed")
+      console.log(err)
+      if (!err.response) {
+        message.error("Failed")
+      } else {
+        const { data } = err.response
+        message.error(data.message || "Failed")
+      }
     } finally {
       setSubmitting(false);
     }
