@@ -1,6 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Layout } from 'antd';
 import { useParams } from "react-router-dom";
+
+import { StoreContext } from '../../../store';
+import { getUser } from '../../../store/user/selector';
+import { getDiscussions } from '../../../store/discussion/selector';
+import { addMessage } from '../../../store/discussion-chat/action';
+import discussionWS from '../../../adapter/discussWS';
 
 import PanelDiscussion from './PanelDiscussion';
 import PanelDiscussionChat from './PanelDiscussionChat';
@@ -10,7 +16,23 @@ import  style from './index.module.scss';
 const { Sider } = Layout;
 
 const Chat = () => {
+  const { state, dispatch } = useContext(StoreContext);
+  const discussions = getDiscussions(state);
+  const { token } = getUser(state)
   const { discussionCode } = useParams();
+
+  useEffect(() => {
+    const incomingMessageHandler = (message) => {
+      dispatch(addMessage(message))
+    }
+
+    discussionWS.start(token)
+    discussionWS.listenToIncomingMessage(incomingMessageHandler)
+    return () => {
+      discussionWS.close()
+    }
+
+  }, [token, discussions, dispatch])
 
   const [mobile, setMobile] = useState(window.innerWidth <= 768)
   useEffect(() => {

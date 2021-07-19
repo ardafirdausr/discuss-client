@@ -9,6 +9,7 @@
     overflow-y: scroll;
     background-color: #f9f9f9;
     padding: 8px 16px;
+    scroll-behavior: smooth;
 
     &::-webkit-scrollbar{
       width: 10px;
@@ -63,7 +64,7 @@
       flex-direction: row;
       justify-content: flex-end;
       align-items: flex-end;
-      margin: 8px 0px;
+      margin: 16px 0px;
 
       .avatar {
         order: 2

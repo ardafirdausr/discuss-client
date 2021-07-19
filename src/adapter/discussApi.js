@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-import { endpoint } from '../config/api';
+import { discussAPIEndPoint } from '../config/api';
 
 const axiosAPIInstance = axios.create({
-  baseURL: endpoint,
+  baseURL: discussAPIEndPoint,
   timeout: 5000
 });
 

@@ -1,26 +1,26 @@
-import * as type from './type';
+import * as discussionType from './type';
 import * as actionMaker from './action';
 
-const discussionsReducer = (state = [], action) => {
-  switch (action.type) {
-    case type.POPULATE_DISCUSSION:
-      return action.payload.map(discussion => {
+const discussionsReducer = (state = [], { type, payload }) => {
+  switch (type) {
+    case discussionType.POPULATE_DISCUSSION:
+      return payload.map(discussion => {
         return discussionReducer(null, actionMaker.addDiscussion(discussion))
       })
-    case type.ADD_DISCUSSION:
-      let discussion = discussionReducer(null, action);
+    case discussionType.ADD_DISCUSSION:
+      let discussion = discussionReducer(null, { type, payload });
       return [...state, discussion];
-    case type.REMOVE_DISCUSSION:
-      return state.filter(discussion => discussion.id !== action.payload.id);
+    case discussionType.REMOVE_DISCUSSION:
+      return state.filter(discussion => discussion.id !== payload.id);
     default:
       return state;
   }
 }
 
-const discussionReducer = (state = null, action) => {
-  switch (action.type) {
-    case type.ADD_DISCUSSION:
-      return { ...action.payload }
+const discussionReducer = (state = null, { type, payload }) => {
+  switch (type) {
+    case discussionType.ADD_DISCUSSION:
+      return { ...payload }
     default:
       return state;
   }
