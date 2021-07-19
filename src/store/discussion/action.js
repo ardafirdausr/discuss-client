@@ -29,6 +29,30 @@ export const addDiscussion = ({
   }
 });
 
+export const updateDiscussion = ({
+  id,
+  name,
+  code,
+  imageUrl,
+  description,
+  creatorId,
+  members,
+  createdAt,
+  updatedAt }) => ({
+  type: type.UPDATE_DISCUSSION,
+  payload: {
+    id,
+    name,
+    code,
+    imageUrl,
+    description,
+    creatorId,
+    createdAt,
+    updatedAt,
+    members: members,
+  }
+});
+
 
 export const removeDiscussion = ({ id }) => ({
   type: type.REMOVE_DISCUSSION,

@@ -13,7 +13,8 @@ import {
   faSignOutAlt,
   faInfoCircle,
   faEdit,
-  faEnvelopeOpenText
+  faEnvelopeOpenText,
+  faLock
 } from '@fortawesome/free-solid-svg-icons'
 
 import discussAPI from '../../../adapter/discussAPI';
@@ -23,7 +24,13 @@ import { removeDiscussion } from '../../../store/discussion/action';
 import style from './DiscussionInformation.module.scss';
 
 
-const DiscussionInformation = ({ discussion, onClickDetail, onClickEdit, onClickInvite }) => {
+const DiscussionInformation = ({
+  discussion,
+  onClickDetail,
+  onClickEdit,
+  onClickInvite,
+  onClickEditPassword
+}) => {
   const { dispatch } = useContext(StoreContext);
 
   const leave = async () => {
@@ -58,11 +65,16 @@ const DiscussionInformation = ({ discussion, onClickDetail, onClickEdit, onClick
         </div>
       </Menu.Item>
       <Menu.Item key="discussion-menu-3">
+        <div onClick={onClickEditPassword} style={{fontWeight: "bold", color: "#6f6f6f"}}>
+          <FontAwesomeIcon icon={faLock} style={{ marginRight: "10px" }}/> Edit Password
+        </div>
+      </Menu.Item>
+      <Menu.Item key="discussion-menu-4">
         <div onClick={onClickInvite} style={{fontWeight: "bold", color: "#6f6f6f"}}>
           <FontAwesomeIcon icon={faEnvelopeOpenText} style={{ marginRight: "10px" }}/> Invite Member
         </div>
       </Menu.Item>
-      <Menu.Item key="discussion-menu-4" style={{borderTop: "1px solid #eaeaea"}}>
+      <Menu.Item key="discussion-menu-5" style={{borderTop: "1px solid #eaeaea"}}>
         <div onClick={leaveConfirm} style={{fontWeight: "bold", color: "deeppink"}}>
           <FontAwesomeIcon icon={faSignOutAlt} style={{ marginRight: "10px" }}/> Leave Discussion
         </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import {
   Drawer,
   Button,
@@ -6,19 +6,12 @@ import {
   Col,
   Form,
   Input,
-  Image,
   message,
-  Upload
 } from "antd";
-import humps from 'humps';
 
 import discussAPI from '../../../adapter/discussAPI';
-import slugify from '../../../lib/slugify';
-import { StoreContext } from '../../../store';
-import { updateDiscussion } from '../../../store/discussion/action';
 
-const DrawerEditDiscussion = ({ discussion, open, onCloseDrawer }) => {
-  const { dispatch } = useContext(StoreContext);
+const DrawerEditPassword = ({ discussion, open, onCloseDrawer }) => {
   const [submitting, setSubmitting] = useState(false)
   const [form] = Form.useForm();
 
@@ -34,14 +27,16 @@ const DrawerEditDiscussion = ({ discussion, open, onCloseDrawer }) => {
   const handleFormSubmit = async () => {
     try {
       setSubmitting(true);
-      let values = await form.validateFields()
-      const { data: response } = await discussAPI.put(`/discussions/${discussion.id}`, values);
-      const { data: discussionData } = response;
-      const formattedDiscussion = humps.camelizeKeys(discussionData);
-      dispatch(updateDiscussion(formattedDiscussion))
+      let values = await form.validateFields();
+      if (values.password !== values.password_confirmation) {
+        message.error("Invalid password confirmation")
+        return;
+      }
+
+      await discussAPI.put(`/discussions/${discussion.id}/password`, values);
       form.resetFields();
       onCloseDrawer();
-      message.success("Discussion updated")
+      message.success("Discussion password updated")
     } catch (err) {
       console.log(err)
       if (!err.response) {
@@ -78,51 +73,26 @@ const DrawerEditDiscussion = ({ discussion, open, onCloseDrawer }) => {
         layout="vertical"
         form={form}>
         <Row gutter={{ xs: 8, sm: 16}}>
-          <Col span={24} style={{textAlign: "center", marginBottom: 24}}>
-            <Image
-              width={150}
-              height={150}
-              src={discussion.imageUrl || 'error'}
-              fallback={imagePlaceholder} />
-            <div style={{textAlign: "center"}}>
-              <Upload name="logo" action="/upload.do" listType="picture" maxCount={1}>
-                <Button type="primary">Change image</Button>
-              </Upload>
-            </div>
-          </Col>
           <Col span={24}>
             <Form.Item
-              name="name"
-              label="Name"
-              initialValue={discussion.name}
+              name="password"
+              label="Password"
               rules={[
-                { required: true, message: 'Please enter discussion name' },
-                { min: 4, message: 'Minimum discussion name length is 4 character'},
+                { required: true, message: 'Please enter discussion password' },
                 { transform: (value) => value.trim() }
               ]}>
-              <Input placeholder="ex: Stock Discussion" />
+              <Input.Password />
             </Form.Item>
           </Col>
           <Col span={24}>
             <Form.Item
-              name="code"
-              label="Code"
-              initialValue={discussion.code}
+              name="password_confirmation"
+              label="Password Confirmation"
               rules={[
-                { required: true, message: 'Please enter discussion code' },
-                { pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/, message: 'Valid code example: this-is-valid-code-123' },
-                { transform: (value) => slugify(value) }
+                { required: true, message: 'Please enter password confirmation' },
+                { transform: (value) => value.trim() }
               ]}>
-              <Input placeholder="ex: stock-discussion-2020"/>
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item
-              name="description"
-              label="Description"
-              initialValue={discussion.description}
-              rules={[{ transform: (value) => value.trim() }]}>
-              <Input.TextArea rows={2} />
+              <Input.Password />
             </Form.Item>
           </Col>
         </Row>
@@ -131,4 +101,4 @@ const DrawerEditDiscussion = ({ discussion, open, onCloseDrawer }) => {
   );
 }
 
-export default DrawerEditDiscussion;
+export default DrawerEditPassword;

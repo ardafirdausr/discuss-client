@@ -7,7 +7,8 @@ import {
   Avatar,
   Form,
   Input,
-  Button
+  Button,
+  Upload
 } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faPaperclip } from '@fortawesome/free-solid-svg-icons';
@@ -97,18 +98,32 @@ const DiscussionChat = ({ discussion }) => {
           icon={<FontAwesomeIcon icon={faPaperclip} />} /> */}
         <Form
           name="send_chat"
-          layout="inline"
-          form={form}
-          wrapperCol={24}>
-          <Form.Item name="message" wrapperCol={{ flex: "auto" }}>
-            <Input placeholder="Send a message" />
-          </Form.Item>
-          <Form.Item wrapperCol={{ flex: "40px" }}>
-            <Button
-              type="primary"
-              icon={<FontAwesomeIcon icon={faPaperPlane} />}
-              onClick={sendMessage} />
-          </Form.Item>
+          form={form}>
+            <Row
+              justify="center"
+              align="middle">
+              <Col flex="40px" >
+                <Upload name="media" action="/upload.do" listType="picture" maxCount={1}>
+                  <Button
+                    type="primary"
+                    icon={<FontAwesomeIcon icon={faPaperclip} />}
+                    onClick={sendMessage} />
+                </Upload>
+              </Col>
+              <Col flex="auto">
+                <Form.Item name="message" style={{marginBottom: 0}}>
+                  <Input placeholder="Send a message" />
+                </Form.Item>
+              </Col>
+              <Col flex="40px" >
+                <Form.Item style={{marginBottom: 0}}>
+                  <Button
+                    type="primary"
+                    icon={<FontAwesomeIcon icon={faPaperPlane} />}
+                    onClick={sendMessage} />
+                </Form.Item>
+              </Col>
+            </Row>
         </Form>
         {/* <Row
           justify="space-between"

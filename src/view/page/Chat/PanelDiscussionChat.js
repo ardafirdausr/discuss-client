@@ -10,7 +10,8 @@ import DiscussionInformation from './DiscussionInformation';
 import DiscussionChat from './DiscussionChat';
 import DrawerDiscussionDetail from './DrawerDiscussionDetail';
 import DrawerEditDiscussion from './DrawerEditDiscussion';
-import DrawerInviteMember from './DrawerInviteMember';
+import DrawerEditPassword from './DrawerEditPassword';
+// import DrawerInviteMember from './DrawerInviteMember';
 
 const DiscussionEmptyPanel = () => (
   <div className={style.emptyContainer}>
@@ -26,7 +27,8 @@ const PanelDiscussionChat = () => {
   const discussion = getDiscussionByCode(state, discussionCode);
   const [openDetailDrawer, setOpenDetailDrawer] = useState(false)
   const [openEditDrawer, setOpenEditDrawer] = useState(false)
-  const [openInviteDrawer, setOpenInviteDrawer] = useState(false)
+  const [openEditPasswordDrawer, setOpenEditPasswordDrawer] = useState(false)
+  // const [openInviteDrawer, setOpenInviteDrawer] = useState(false)
 
   if (!discussion) {
     return <DiscussionEmptyPanel />;
@@ -38,16 +40,21 @@ const PanelDiscussionChat = () => {
         discussion={discussion}
         onClickDetail={() => setOpenDetailDrawer(true)}
         onClickEdit={() => setOpenEditDrawer(true)}
-        onClickInvite={() => setOpenInviteDrawer(true) }/>
+        onClickEditPassword={() => setOpenEditPasswordDrawer(true) }/>
+        {/* onClickInvite={() => setOpenInviteDrawer(true) }/> */}
       <DiscussionChat discussion={discussion} />
       <DrawerDiscussionDetail
         discussion={discussion}
         open={openDetailDrawer}
         onCloseDrawer={() => setOpenDetailDrawer(false)} />
-      {/* <DrawerEditDiscussion
+      <DrawerEditDiscussion
         discussion={discussion}
         open={openEditDrawer}
-        onCloseDrawer={() => setOpenEditDrawer(false)} /> */}
+        onCloseDrawer={() => setOpenEditDrawer(false)} />
+      <DrawerEditPassword
+        discussion={discussion}
+        open={openEditPasswordDrawer}
+        onCloseDrawer={() => setOpenEditPasswordDrawer(false)} />
       {/* <DrawerInviteMember
         open={openInviteDrawer}
         onCloseDrawer={() => setOpenInviteDrawer(false)} /> */}
