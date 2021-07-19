@@ -57,10 +57,10 @@ export default (() => {
   const listenToIncomingMessage = (listener) => {
     ws.onopen = () => console.log("Connected to the server")
     ws.onclose = () => console.log("Disconnected from the server")
-    ws.onmessage = (jsonMessage) => {
-      console.log(jsonMessage)
-      const message = JSON.parse(jsonMessage);
-      listener(message);
+    ws.onmessage = ({ data }) => {
+      const message = JSON.parse(data);
+      const formatedMessage = humps.camelizeKeys(message);
+      listener(formatedMessage);
     }
   }
 

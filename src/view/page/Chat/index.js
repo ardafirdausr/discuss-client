@@ -23,6 +23,7 @@ const Chat = () => {
 
   useEffect(() => {
     const incomingMessageHandler = (message) => {
+      console.log(message);
       dispatch(addMessage(message))
     }
 
