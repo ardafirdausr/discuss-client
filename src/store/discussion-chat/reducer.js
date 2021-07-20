@@ -5,14 +5,15 @@ const messagesReducer = (state = {}, action) => {
   let prevMessages = [];
   switch (action.type) {
     case discussionChatType.ADD_OLD_MESSAGES:
-      prevMessages = state[action.payload.receiverId] ? [...state[action.payload.receiverId]] : [];
-      let messages = action.payload.messages.map(message => {
+      prevMessages = state[action.payload.id] ? [...state[action.payload.id]] : [];
+      let messages = [];
+      action.payload.messages.forEach(message => {
         const addMessageAction = actionMaker.addMessage(message)
-        return messageReducer(null, addMessageAction)
+        messages.unshift(messageReducer(null, addMessageAction));
       })
       return {
         ...state,
-        [action.payload.receiverId]: [...messages, ...prevMessages]
+        [action.payload.id]: [...messages, ...prevMessages]
       };
     case discussionChatType.ADD_NEW_MESSAGE:
       prevMessages = state[action.payload.receiverId] ? [...state[action.payload.receiverId]] : [];
