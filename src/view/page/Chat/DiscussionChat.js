@@ -182,9 +182,6 @@ const DiscussionChat = ({ discussion }) => {
         <div ref={endOfChatRef}></div>
       </div>
       <div className={style.messageFormContainer}>
-        {/* <Button
-          type="primary"
-          icon={<FontAwesomeIcon icon={faPaperclip} />} /> */}
         <Form
           name="send_chat"
           form={form}
@@ -197,7 +194,8 @@ const DiscussionChat = ({ discussion }) => {
                   <Button
                     type="primary"
                     icon={<FontAwesomeIcon icon={faPaperclip} />}
-                    onClick={sendMessage} />
+                    onClick={sendMessage}
+                    disabled />
                 </Upload>
               </Col>
               <Col flex="auto">

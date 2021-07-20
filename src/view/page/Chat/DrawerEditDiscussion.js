@@ -86,7 +86,7 @@ const DrawerEditDiscussion = ({ discussion, open, onCloseDrawer }) => {
               fallback={imagePlaceholder} />
             <div style={{textAlign: "center"}}>
               <Upload name="logo" action="/upload.do" listType="picture" maxCount={1}>
-                <Button type="primary">Change image</Button>
+                <Button type="primary" disabled>Change image</Button>
               </Upload>
             </div>
           </Col>
