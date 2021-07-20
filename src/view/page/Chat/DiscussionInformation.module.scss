@@ -1,0 +1,54 @@
+.container {
+  width: 100%;
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fbfbfb;
+  box-shadow: 0px 2px 3px #cfcfcf;
+  position: relative;
+
+  .discussionWrapper {
+    flex: 1;
+    width: calc(100% - 50px);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-right: 10px;
+
+    .imageWrapper {
+      text-align: center;
+      margin-right: 16px;
+    }
+
+    .infoWrapper {
+      flex: 1;
+      width: calc(100% - 50px);
+
+      .name {
+        width: 100%;
+        overflow: hidden;
+        font-weight: 700;
+        color: #5f5f5f;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .member {
+        font-weight: 500;
+        color: #8f8f8f;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+  }
+
+  .menuButton {
+    color: #8f8f8f;
+    cursor: pointer;
+  }
+}
