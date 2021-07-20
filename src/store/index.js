@@ -1,6 +1,8 @@
 import { useReducer, createContext } from 'react';
 
-import userReducer from './user/reducers';
+import userReducer from './user/reducer';
+import discussionsReducer from './discussion/reducer';
+import discussionChatReducer from './discussion-chat/reducer'
 
 const combineReducers = (reducers) => {
   return (state = {}, action) => {
@@ -12,14 +14,17 @@ const combineReducers = (reducers) => {
   }
 }
 
-const getInitialState = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  return { user };
-}
+const getInitialState = () => ({
+  user: JSON.parse(localStorage.getItem('user')),
+  discussions: [],
+  discussionChat: {},
+})
 
 
 const reducer = combineReducers({
-  user: userReducer
+  user: userReducer,
+  discussions: discussionsReducer,
+  discussionChat: discussionChatReducer,
 })
 
 

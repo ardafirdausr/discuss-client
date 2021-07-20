@@ -2,17 +2,17 @@ import { useContext } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { message } from 'antd';
 
-import discussApi from '../../../adapter/discussApi';
+import discussAPI from '../../../adapter/discussAPI';
 import { clientId } from '../../../config/oauth';
 
 import { StoreContext } from '../../../store';
-import { login } from '../../../store/user/actions';
+import * as userAction from '../../../store/user/action';
 
 const LoginButton = () => {
-  const { dispatch } = useContext(StoreContext)
+  const { dispatch } = useContext(StoreContext);
 
-  const loginUser = (token, user) => {
-    const loginAction = login(token, user.email, user.name, user.imageUrl)
+  const loginUser = (user) => {
+    const loginAction = userAction.login(user)
     dispatch(loginAction)
     localStorage.setItem("user", JSON.stringify(user))
   }
@@ -27,21 +27,26 @@ const LoginButton = () => {
 		}
 
     try {
-			let response = await discussApi.post('/auth/login', {
+			let response = await discussAPI.post('/auth/login', {
 				"token_id": googleAuth.tokenId
 			});
-			let { data: user, token } = response.data;
-      loginUser(token, user)
+			let { data, token } = response.data;
+      const user = {
+        token,
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        imageUrl: data.image_url,
+      }
+      loginUser(user)
 		} catch(err) {
 			message.warn("Login failed")
 			console.log(err)
 		}
-    console.log(googleAuth);
 	}
 
 	const failedHandler = function (resp) {
     message.error("Whoops. Something went wrong")
-		console.log(resp)
 	}
 
   return (

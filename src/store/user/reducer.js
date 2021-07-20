@@ -1,10 +1,10 @@
-import * as types from './types';
+import * as type from './type';
 
 const userReducer = (state = null, action) => {
   switch (action.type) {
-    case types.USER_LOGIN:
+    case type.LOGIN:
       return {...action.payload}
-    case types.USER_LOGOUT:
+    case type.LOGOUT:
       return null
     default:
       return state;

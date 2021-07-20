@@ -15,6 +15,7 @@ const AppRouter = () => (
   <Router>
     <Switch>
       <AuthRoute exact path="/chat" component={Chat} />
+      <AuthRoute exact path="/chat/:discussionCode" component={Chat} />
       <AuthRoute exact path="/auth/logout" component={Logout} />
       <GuestRoute exact path="/auth/login" component={Login} />
       <GuestRoute exact path="/" component={Login} />

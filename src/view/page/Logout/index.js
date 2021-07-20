@@ -3,13 +3,13 @@ import { useGoogleLogout } from 'react-google-login';
 import { Row, Col, Spin } from 'antd';
 
 import { StoreContext } from '../../../store';
-import { logout } from '../../../store/user/actions';
+import { logout } from '../../../store/user/action';
 import { clientId } from '../../../config/oauth';
 
 import style from './index.module.scss'
 
 const Logout = () => {
-  const { dispatch } = useContext(StoreContext)
+  const { dispatch } = useContext(StoreContext);
 
 	let logoutHandler = () => {
 		const logoutAction = logout()

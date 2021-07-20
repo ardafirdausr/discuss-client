@@ -9,7 +9,7 @@ const Login = () => (
     <Row
       justify="center"
       align="middle"
-      gutter={{ xs: 8, sm: 16, md: 24}}
+      gutter={{ xs: 8, sm: 16, md: 24, lg: 32}}
       className={style.wrapper}>
       <Col xs={{offset: 2, span: 20}} md={{offset: 0, span: 10}}>
         <img
