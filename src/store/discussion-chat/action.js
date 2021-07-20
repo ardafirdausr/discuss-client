@@ -1,5 +1,11 @@
 import * as type from './type';
 
+export const populateMessages = (id, messages) => ({
+  type: type.POPULATE_MESSAGES,
+  payload: { id, messages },
+})
+
+
 export const addOldMessages = (id, messages) => ({
   type: type.ADD_OLD_MESSAGES,
   payload: { id, messages },
