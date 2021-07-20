@@ -19,7 +19,7 @@ import humps from 'humps';
 import { StoreContext } from '../../../store';
 import { getUser } from '../../../store/user/selector';
 import { getMessagesByDiscussionId } from '../../../store/discussion-chat/selector';
-import { addMessage, addOldMessages } from '../../../store/discussion-chat/action';
+import { addMessage, addOldMessages, populateMessages } from '../../../store/discussion-chat/action';
 import { updateFetchDiscussionMeta } from '../../../store/discussion/action';
 import discussionAPI from '../../../adapter/discussAPI';
 import discussionWS from '../../../adapter/discussWS';
@@ -90,7 +90,6 @@ const DiscussionChat = ({ discussion }) => {
     try {
       setFetchingMessage(true);
       let page = discussionMeta.nextPage || 1;
-      console.log(discussionMeta);
       const { data: payload } = await discussionAPI.get(`discussions/${discussion.id}/messages?page=${page}&size=25`)
       const { data: messages } = payload;
       const formatedMessages = humps.camelizeKeys(messages)
@@ -111,10 +110,11 @@ const DiscussionChat = ({ discussion }) => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
+        setFetchingMessage(true);
         const { data: payload } = await discussionAPI.get(`discussions/${discussionId}/messages?page=1&size=25`)
         const { data: messages } = payload;
         const formatedMessages = humps.camelizeKeys(messages)
-        dispatch(addOldMessages(discussionId, formatedMessages));
+        dispatch(populateMessages(discussionId, formatedMessages));
         dispatch(updateFetchDiscussionMeta(discussionId, {
           nextPage: 2,
           hasMore: formatedMessages.length > 0,
@@ -131,6 +131,8 @@ const DiscussionChat = ({ discussion }) => {
       } catch(err) {
         console.log(err);
         message.err("Failed fetch messages");
+      } finally {
+        setFetchingMessage(false);
       }
     }
     fetchMessages();
