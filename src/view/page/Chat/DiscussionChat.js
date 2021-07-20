@@ -8,7 +8,8 @@ import {
   Form,
   Input,
   Button,
-  Upload
+  Upload,
+  message
 } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faPaperclip } from '@fortawesome/free-solid-svg-icons';
@@ -19,6 +20,7 @@ import { StoreContext } from '../../../store';
 import { getUser } from '../../../store/user/selector';
 import { getMessagesByDiscussionId } from '../../../store/discussion-chat/selector';
 import { addMessage, addOldMessages } from '../../../store/discussion-chat/action';
+import { updateFetchDiscussionMeta } from '../../../store/discussion/action';
 import discussionAPI from '../../../adapter/discussAPI';
 import discussionWS from '../../../adapter/discussWS';
 
@@ -52,7 +54,9 @@ const Message = ({ sender, message }) => {
 }
 
 const DiscussionChat = ({ discussion }) => {
+  const discussionMeta = discussion.meta || {};
   const { state, dispatch } = useContext(StoreContext);
+  const discussionMessages = getMessagesByDiscussionId(state, discussion.id);
   const user = getUser(state);
   const endOfChatRef = useRef(null);
   const sendButton = useRef(null);
@@ -73,20 +77,63 @@ const DiscussionChat = ({ discussion }) => {
     };
     form.resetFields();
     dispatch(addMessage(sentMessage));
+    dispatch(updateFetchDiscussionMeta(sentMessage.receiverId, {
+      lastMessageSender: sentMessage.sender.name,
+      lastMessageType: sentMessage.contentType,
+      lastMessage: sentMessage.content,
+    }));
+    endOfChatRef.current.scrollIntoView(true);
   };
 
-  const [page, setPage] = useState(1)
-  useEffect(() => {
-    const fetchMessages = async () => {
-      const size = 10;
-      const { data: payload } = await discussionAPI.get(`discussions/${discussion.id}/messages?page=${page}&size=${size}`)
+  const [isFetchingMessage, setFetchingMessage] = useState(false);
+  const fetchMessage = async () => {
+    try {
+      setFetchingMessage(true);
+      let page = discussionMeta.nextPage || 1;
+      const { data: payload } = await discussionAPI.get(`discussions/${discussion.id}/messages?page=${page}&size=25`)
       const { data: messages } = payload;
       const formatedMessages = humps.camelizeKeys(messages)
-      dispatch(addOldMessages({ id: discussion.id, messages: formatedMessages }));
-      setPage(page + 1)
+      dispatch(addOldMessages(discussion.id, formatedMessages));
+      dispatch(updateFetchDiscussionMeta(discussion.id, {
+        nextPage: page + 1,
+        hasMore: formatedMessages.length > 0,
+      }));
+    } catch(err) {
+      console.log(err);
+      message.err("Failed fetch messages");
+    } finally {
+      setFetchingMessage(false);
+    }
+  }
+
+  const { id: discussionId } = discussion;
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const { data: payload } = await discussionAPI.get(`discussions/${discussionId}/messages?page=1&size=25`)
+        const { data: messages } = payload;
+        const formatedMessages = humps.camelizeKeys(messages)
+        dispatch(addOldMessages(discussionId, formatedMessages));
+        dispatch(updateFetchDiscussionMeta(discussionId, {
+          nextPage: 2,
+          hasMore: formatedMessages.length > 0,
+        }));
+        endOfChatRef.current.scrollIntoView(true);
+
+        if (formatedMessages.length) {
+          dispatch(updateFetchDiscussionMeta(formatedMessages[0].receiverId, {
+            lastMessageSender: formatedMessages[0].sender.name,
+            lastMessageType: formatedMessages[0].contentType,
+            lastMessage: formatedMessages[0].content,
+          }));
+        }
+      } catch(err) {
+        console.log(err);
+        message.err("Failed fetch messages");
+      }
     }
     fetchMessages();
-  }, [])
+  }, [discussionId, dispatch])
 
   const history = useHistory();
   useEffect(() => {
@@ -109,14 +156,24 @@ const DiscussionChat = ({ discussion }) => {
     }
   })
 
-  const discussionMessages = getMessagesByDiscussionId(state, discussion.id);
-  useEffect(() => {
-    endOfChatRef.current.scrollIntoView(true);
-  }, [discussionMessages])
-
   return (
     <Content className={style.container}>
       <div className={style.messageContainer}>
+        <div className={style.loadMessageButton}>
+          {
+            (discussionMeta.hasMore === true || discussionMeta.hasMore === undefined)
+              && (
+                <Button
+                  size="small"
+                  type="primary"
+                  shape="round"
+                  loading={isFetchingMessage}
+                  onClick={fetchMessage}>
+                  Load older messages
+                </Button>
+              )
+          }
+        </div>
         {
           discussionMessages.map((message) =>
             <Message key={message.id} sender={message.sender.id === user.id} message={message} />)

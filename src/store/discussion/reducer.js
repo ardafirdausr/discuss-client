@@ -13,7 +13,15 @@ const discussionsReducer = (state = [], { type, payload }) => {
     case discussionType.UPDATE_DISCUSSION:
       return state.map(discussion => {
         if (discussion.id === payload.id) {
-          return discussionReducer(null, { type, payload })
+          return discussionReducer(discussion, { type, payload })
+        }
+
+        return discussion;
+      })
+    case discussionType.UPDATE_DISCUSSION_META:
+      return state.map(discussion => {
+        if (discussion.id === payload.id) {
+          return discussionReducer(discussion, { type, payload })
         }
 
         return discussion;
@@ -30,7 +38,14 @@ const discussionReducer = (state = null, { type, payload }) => {
     case discussionType.ADD_DISCUSSION:
       return { ...payload }
     case discussionType.UPDATE_DISCUSSION:
-      return { ...payload }
+      return { ...state, ...payload }
+    case discussionType.UPDATE_DISCUSSION_META:
+      let meta = payload.meta || {};
+      let { id, ...newMeta } = payload;
+      return {
+        ...state,
+        meta: {...meta, ...newMeta}
+      }
     default:
       return state;
   }

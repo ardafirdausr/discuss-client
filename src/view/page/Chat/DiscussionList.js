@@ -61,9 +61,10 @@ const DiscussionSkeleton = () => {
   )
 }
 
-const DiscussionList = ({ onClickCreate, onClickJoin, onSelect }) => {
+const DiscussionList = ({ onClickCreate, onClickJoin }) => {
   const history = useHistory();
   const { state, dispatch } = useContext(StoreContext);
+
   const discussions = getDiscussions(state);
 
   const [ fetching, setFetching ] = useState(false)
@@ -97,6 +98,23 @@ const DiscussionList = ({ onClickCreate, onClickJoin, onSelect }) => {
     );
   }
 
+  const LastMessage = ({ discussion }) => {
+    let message = discussion?.meta?.lastMessage || "";
+    let sender = discussion?.meta?.lastMessageSender || '';
+    let fSender = sender.split(' ')
+    if (fSender.length > 1) {
+      fSender = fSender[0];
+    } else {
+      fSender = sender;
+    }
+    console.log(discussion)
+
+    return (
+      <Text ellipsis className={style.secondary}><b>{fSender} : </b> {message}</Text>
+    )
+  }
+
+
   return (
     <div className={style.discussionListContainer}>
       <List
@@ -115,7 +133,7 @@ const DiscussionList = ({ onClickCreate, onClickJoin, onSelect }) => {
                   : <Avatar size={40}>{discussion.name.charAt(0)}</Avatar>
               }
               title={<Text ellipsis className={style.main}>{discussion.name}</Text>}
-              description={<Text ellipsis className={style.secondary}>some chat text</Text>}
+              description={<LastMessage discussion={discussion} /> }
             />
             <Badge count={0} style={{backgroundColor: '#52c41a'}} />
           </List.Item>

@@ -53,6 +53,13 @@ export const updateDiscussion = ({
   }
 });
 
+export const updateFetchDiscussionMeta = (id, payload) => ({
+  type: type.UPDATE_DISCUSSION_META,
+  payload: {
+    id,
+    ...payload
+  }
+});
 
 export const removeDiscussion = ({ id }) => ({
   type: type.REMOVE_DISCUSSION,

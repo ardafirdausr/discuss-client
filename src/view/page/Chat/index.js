@@ -6,6 +6,7 @@ import { StoreContext } from '../../../store';
 import { getUser } from '../../../store/user/selector';
 import { getDiscussions } from '../../../store/discussion/selector';
 import { addMessage } from '../../../store/discussion-chat/action';
+import { updateFetchDiscussionMeta } from '../../../store/discussion/action';
 import discussionWS from '../../../adapter/discussWS';
 
 import PanelDiscussion from './PanelDiscussion';
@@ -24,6 +25,14 @@ const Chat = () => {
   useEffect(() => {
     const incomingMessageHandler = (message) => {
       dispatch(addMessage(message))
+
+      if (message.receiverType === "message.receiver.discussion") {
+        dispatch(updateFetchDiscussionMeta(message.receiverId, {
+          lastMessageSender: message.sender.name,
+          lastMessageType: message.contentType,
+          lastMessage: message.content,
+        }));
+      }
     }
 
     discussionWS.start(token)

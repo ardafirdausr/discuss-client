@@ -1,6 +1,6 @@
 import * as type from './type';
 
-export const addOldMessages = ({ id, messages }) => ({
+export const addOldMessages = (id, messages) => ({
   type: type.ADD_OLD_MESSAGES,
   payload: { id, messages },
 });
