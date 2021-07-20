@@ -47,7 +47,6 @@ const LoginButton = () => {
 
 	const failedHandler = function (resp) {
     message.error("Whoops. Something went wrong")
-		console.log(resp)
 	}
 
   return (

@@ -13,7 +13,6 @@ import {
   faSignOutAlt,
   faInfoCircle,
   faEdit,
-  faEnvelopeOpenText,
   faLock
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -28,7 +27,6 @@ const DiscussionInformation = ({
   discussion,
   onClickDetail,
   onClickEdit,
-  onClickInvite,
   onClickEditPassword
 }) => {
   const { dispatch } = useContext(StoreContext);
@@ -67,11 +65,6 @@ const DiscussionInformation = ({
       <Menu.Item key="discussion-menu-3">
         <div onClick={onClickEditPassword} style={{fontWeight: "bold", color: "#6f6f6f"}}>
           <FontAwesomeIcon icon={faLock} style={{ marginRight: "10px" }}/> Edit Password
-        </div>
-      </Menu.Item>
-      <Menu.Item key="discussion-menu-4">
-        <div onClick={onClickInvite} style={{fontWeight: "bold", color: "#6f6f6f"}}>
-          <FontAwesomeIcon icon={faEnvelopeOpenText} style={{ marginRight: "10px" }}/> Invite Member
         </div>
       </Menu.Item>
       <Menu.Item key="discussion-menu-5" style={{borderTop: "1px solid #eaeaea"}}>

@@ -107,10 +107,9 @@ const DiscussionList = ({ onClickCreate, onClickJoin }) => {
     } else {
       fSender = sender;
     }
-    console.log(discussion)
 
     return (
-      <Text ellipsis className={style.secondary}><b>{fSender} : </b> {message}</Text>
+      <Text ellipsis className={style.secondary}><b>{fSender ? `${fSender}: ` : ''} </b>{message}</Text>
     )
   }
 

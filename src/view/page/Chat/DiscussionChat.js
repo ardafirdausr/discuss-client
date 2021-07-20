@@ -90,6 +90,7 @@ const DiscussionChat = ({ discussion }) => {
     try {
       setFetchingMessage(true);
       let page = discussionMeta.nextPage || 1;
+      console.log(discussionMeta);
       const { data: payload } = await discussionAPI.get(`discussions/${discussion.id}/messages?page=${page}&size=25`)
       const { data: messages } = payload;
       const formatedMessages = humps.camelizeKeys(messages)

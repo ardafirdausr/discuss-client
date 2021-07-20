@@ -17,7 +17,7 @@ const DiscussionEmptyPanel = () => (
   <div className={style.emptyContainer}>
     <img src="/assets/images/vector/quickchat.svg" alt="Start Chat" className={style.image}/>
     <h1>Start your discussion</h1>
-    <h3>Create a discussion and invite your friends to start your discussion<br/> or Join a discussion by click on the discussion link from your friend.</h3>
+    <h3>Create your own discussion <br /> or Join a discussion by entering the discussion code and password</h3>
   </div>
 );
 
@@ -41,7 +41,6 @@ const PanelDiscussionChat = () => {
         onClickDetail={() => setOpenDetailDrawer(true)}
         onClickEdit={() => setOpenEditDrawer(true)}
         onClickEditPassword={() => setOpenEditPasswordDrawer(true) }/>
-        {/* onClickInvite={() => setOpenInviteDrawer(true) }/> */}
       <DiscussionChat discussion={discussion} />
       <DrawerDiscussionDetail
         discussion={discussion}

@@ -40,11 +40,11 @@ const discussionReducer = (state = null, { type, payload }) => {
     case discussionType.UPDATE_DISCUSSION:
       return { ...state, ...payload }
     case discussionType.UPDATE_DISCUSSION_META:
-      let meta = payload.meta || {};
+      let oldMeta = state.meta || {};
       let { id, ...newMeta } = payload;
       return {
         ...state,
-        meta: {...meta, ...newMeta}
+        meta: {...oldMeta, ...newMeta}
       }
     default:
       return state;
